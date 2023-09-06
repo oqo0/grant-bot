@@ -25,4 +25,14 @@
     </ItemGroup>
 
 
+    <ItemGroup>
+      <Folder Include="Attributes\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="settings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
