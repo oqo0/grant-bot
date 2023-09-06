@@ -13,14 +13,14 @@ public class Program
 
     private readonly DiscordSocketConfig _socketConfig = new()
     {
-        GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.GuildMembers,
+        GatewayIntents = GatewayIntents.AllUnprivileged,
         AlwaysDownloadUsers = true,
     };
 
     private Program()
     {
         _configuration = new ConfigurationBuilder()
-            .AddJsonFile("settings.json", optional: true)
+            .AddJsonFile("settings.json")
             .Build();
 
         _services = new ServiceCollection()
