@@ -20,7 +20,7 @@ public class Program
     private Program()
     {
         _configuration = new ConfigurationBuilder()
-            .AddYamlFile("settings.yml")
+            .AddYamlFile("config.yml")
             .Build();
 
         _services = new ServiceCollection()
@@ -50,6 +50,8 @@ public class Program
         await client.LoginAsync(TokenType.Bot, _configuration["bot-token"]);
         await client.StartAsync();
 
+        await SetUpPresence(client);
+        
         await Task.Delay(Timeout.Infinite);
     }
 
@@ -59,6 +61,16 @@ public class Program
         return Task.CompletedTask;
     }
 
+    private async Task SetUpPresence(DiscordSocketClient client)
+    {
+        bool isPresenceEnabled = _configuration.GetValue<bool>("presence:enabled");
+        if (isPresenceEnabled)
+        {
+            string gameName = _configuration["presence:game-name"];
+            await client.SetGameAsync(gameName);
+        }
+    }
+    
     public static bool IsDebug()
     {
         #if DEBUG
