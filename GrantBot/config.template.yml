@@ -1,0 +1,11 @@
+# DON'T EDIT THE TEMPLATE FILE.
+# Instead copy the content of this file to config.yml, set up your settings and it is going to be used
+# as a config for this project.
+
+# Bot token from https://discord.com/developers/applications/
+bot-token: "0"
+
+# Playing a game module
+presence:
+  enabled: False
+  game-name: "PixelPlace 2"

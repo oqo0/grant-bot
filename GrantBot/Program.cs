@@ -20,7 +20,7 @@ public class Program
     private Program()
     {
         _configuration = new ConfigurationBuilder()
-            .AddJsonFile("settings.json")
+            .AddYamlFile("settings.yml")
             .Build();
 
         _services = new ServiceCollection()
@@ -47,7 +47,7 @@ public class Program
         await _services.GetRequiredService<InteractionHandler>()
             .InitializeAsync();
 
-        await client.LoginAsync(TokenType.Bot, _configuration["botToken"]);
+        await client.LoginAsync(TokenType.Bot, _configuration["bot-token"]);
         await client.StartAsync();
 
         await Task.Delay(Timeout.Infinite);
