@@ -39,10 +39,8 @@ public class InteractionHandler
 
     private async Task ReadyAsync()
     {
-        if (Program.IsDebug())
-            await _handler.RegisterCommandsToGuildAsync(1133117118494277684, true);
-        else
-            await _handler.RegisterCommandsGloballyAsync(true);
+        ulong serverId = _configuration.GetValue<ulong>("server-id");
+        await _handler.RegisterCommandsToGuildAsync(serverId, true);
     }
 
     private async Task HandleInteraction(SocketInteraction interaction)

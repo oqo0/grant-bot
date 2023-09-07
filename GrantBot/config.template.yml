@@ -5,6 +5,9 @@
 # Bot token from https://discord.com/developers/applications/
 bot-token: "0"
 
+# Id of a server which is going to be used for set up
+server-id: 0
+
 # Playing a game module
 presence:
   enabled: False
