@@ -12,3 +12,11 @@ server-id: 0
 presence:
   enabled: False
   game-name: "PixelPlace 2"
+
+# Giving a role with ID when user sets reactions to a message 
+reaction-role:
+  enabled: False
+  role-id: 0
+  message-id: 0
+  reaction-emojis-ids:
+    - 0
