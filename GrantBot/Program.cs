@@ -32,6 +32,7 @@ public class Program
             .AddSingleton<InteractionHandler>()
             .BuildServiceProvider();
 
+        // registering ReactionRoleModule
         var _ = new ReactionRoleModule(
             _services.GetRequiredService<DiscordSocketClient>(),
             _services.GetRequiredService<IConfiguration>());
