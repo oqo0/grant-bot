@@ -24,15 +24,12 @@ public class InteractionHandler
     public async Task InitializeAsync()
     {
         _client.Ready += ReadyAsync;
-        _handler.Log += LogAsync;
+        _handler.Log += Program.LogAsync;
 
         await _handler.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
 
         _client.InteractionCreated += HandleInteraction;
     }
-
-    private async Task LogAsync(LogMessage log)
-        => Console.WriteLine(log);
 
     private async Task ReadyAsync()
     {

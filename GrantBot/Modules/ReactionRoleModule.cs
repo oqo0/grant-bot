@@ -1,6 +1,7 @@
 using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace GrantBot.Modules;
 
@@ -8,11 +9,16 @@ public class ReactionRoleModule
 {
     private readonly DiscordSocketClient _client;
     private readonly IConfiguration _configuration;
+    private readonly ILogger<ReactionRoleModule> _logger;
 
-    public ReactionRoleModule(DiscordSocketClient client, IConfiguration configuration)
+    public ReactionRoleModule(
+        DiscordSocketClient client,
+        IConfiguration configuration,
+        ILogger<ReactionRoleModule> logger)
     {
         _client = client;
         _configuration = configuration;
+        _logger = logger;
         
         _client.ReactionAdded += HandleReactionAdded;
     }
@@ -33,5 +39,9 @@ public class ReactionRoleModule
         
         if (reaction.User.Value is SocketGuildUser socketUser)
             await socketUser.AddRoleAsync(roleId);
+        
+        _logger.LogInformation(
+            "User {Username} ({UserId}) received role {RoleId} by using a reaction.",
+            reaction.User.Value.Username, reaction.User.Value.Id, roleId);
     }
 }

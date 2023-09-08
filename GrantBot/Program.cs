@@ -4,6 +4,9 @@ using Discord.WebSocket;
 using GrantBot.Modules;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+using Microsoft.Extensions.Logging;
+using Serilog.Events;
 
 namespace GrantBot;
 
@@ -11,7 +14,9 @@ public class Program
 {
     private readonly IConfiguration _configuration;
     private readonly IServiceProvider _services;
-
+    
+    private static string _logLevel = "info";
+    
     private readonly DiscordSocketConfig _socketConfig = new()
     {
         GatewayIntents = GatewayIntents.AllUnprivileged,
@@ -24,26 +29,55 @@ public class Program
             .AddYamlFile("config.yml")
             .Build();
 
+        LogLevel logLevel;
+        switch (_logLevel.ToLower())
+        {
+            case "info":
+                logLevel = LogLevel.Information;
+                break;
+            case "debug":
+                logLevel = LogLevel.Debug;
+                break;
+            case "trace":
+                logLevel = LogLevel.Trace;
+                break;
+            default: 
+                logLevel = LogLevel.Error;
+                break;
+        }
+        
         _services = new ServiceCollection()
             .AddSingleton(_configuration)
             .AddSingleton(_socketConfig)
             .AddSingleton<DiscordSocketClient>()
             .AddSingleton(sp => new InteractionService(sp.GetRequiredService<DiscordSocketClient>()))
-            .AddSingleton<InteractionHandler>()
+            .AddSingleton<InteractionHandler>() 
+            .AddLogging(conf => conf.AddSerilog().SetMinimumLevel(logLevel))
             .BuildServiceProvider();
 
         // registering ReactionRoleModule
         var _ = new ReactionRoleModule(
             _services.GetRequiredService<DiscordSocketClient>(),
-            _services.GetRequiredService<IConfiguration>());
+            _services.GetRequiredService<IConfiguration>(),
+            _services.GetRequiredService<ILogger<ReactionRoleModule>>());
     }
 
     static void Main(string[] args)
-        => new Program()
+    {
+        if (args.Length != 0)
+            _logLevel = args[0];
+        
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
+            .WriteTo.Console()
+            .CreateLogger();
+        
+        new Program()
             .RunAsync()
             .GetAwaiter()
             .GetResult();
-
+    }
+    
     private async Task RunAsync()
     {
         var client = _services.GetRequiredService<DiscordSocketClient>();
@@ -61,10 +95,26 @@ public class Program
         await Task.Delay(Timeout.Infinite);
     }
 
-    private Task LogAsync(LogMessage message)
+    internal static async Task LogAsync(LogMessage message)
     {
-        Console.WriteLine(message.ToString());
-        return Task.CompletedTask;
+        var severity = message.Severity switch
+        {
+            LogSeverity.Critical => LogEventLevel.Fatal,
+            LogSeverity.Error => LogEventLevel.Error,
+            LogSeverity.Warning => LogEventLevel.Warning,
+            LogSeverity.Info => LogEventLevel.Information,
+            LogSeverity.Verbose => LogEventLevel.Verbose,
+            LogSeverity.Debug => LogEventLevel.Debug,
+            _ => LogEventLevel.Information
+        };
+        
+        Log.Write(
+            severity,
+            message.Exception,
+            "[{Source}] {Message}",
+            message.Source, message.Message);
+        
+        await Task.CompletedTask;
     }
 
     private async Task SetUpPresence(DiscordSocketClient client)
