@@ -18,5 +18,6 @@ reaction-role:
   enabled: False
   role-id: 0
   message-id: 0
-  reaction-emojis-ids:
-    - 0
+  reaction-emojis-ids: [
+    "<:emoji:0>"
+  ]

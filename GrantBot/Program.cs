@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Interactions;
 using Discord.WebSocket;
+using GrantBot.Modules;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,9 +28,13 @@ public class Program
             .AddSingleton(_configuration)
             .AddSingleton(_socketConfig)
             .AddSingleton<DiscordSocketClient>()
-            .AddSingleton(x => new InteractionService(x.GetRequiredService<DiscordSocketClient>()))
+            .AddSingleton(sp => new InteractionService(sp.GetRequiredService<DiscordSocketClient>()))
             .AddSingleton<InteractionHandler>()
             .BuildServiceProvider();
+
+        var _ = new ReactionRoleModule(
+            _services.GetRequiredService<DiscordSocketClient>(),
+            _services.GetRequiredService<IConfiguration>());
     }
 
     static void Main(string[] args)

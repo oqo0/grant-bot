@@ -27,9 +27,6 @@
     </ItemGroup>
 
 
-    <ItemGroup>
-      <Folder Include="Attributes\" />
-    </ItemGroup>
 
 
 
@@ -39,6 +36,14 @@
       <None Update="config.yml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+    </ItemGroup>
+
+
+
+
+
+    <ItemGroup>
+      <Folder Include="Attributes\" />
     </ItemGroup>
 
 </Project>
