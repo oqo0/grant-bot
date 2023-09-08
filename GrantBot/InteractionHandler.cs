@@ -78,7 +78,7 @@ public class InteractionHandler
                 .ContinueWith(async msg=> await msg.Result.DeleteAsync());
 
             await interaction.FollowupAsync(
-                "An error occurred during the execution of the module.", ephemeral: true);
+                _configuration["language:error"], ephemeral: true);
         }
 
         _logger.LogError(

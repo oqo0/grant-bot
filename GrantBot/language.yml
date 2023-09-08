@@ -1,0 +1,4 @@
+# Bot messages that users can see
+
+language:
+  error: "An error occurred during the execution of the module."

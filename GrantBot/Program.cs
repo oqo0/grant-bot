@@ -26,7 +26,8 @@ public class Program
     private Program()
     {
         _configuration = new ConfigurationBuilder()
-            .AddYamlFile("config.yml")
+            .AddYamlFile("config.yml", false, true)
+            .AddYamlFile("language.yml", false, true)
             .Build();
 
         LogLevel logLevel;
