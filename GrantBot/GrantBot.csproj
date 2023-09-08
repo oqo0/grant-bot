@@ -55,4 +55,12 @@
       <Folder Include="Attributes\" />
     </ItemGroup>
 
+
+
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\GrantBot.Data\GrantBot.Data.csproj" />
+    </ItemGroup>
+
 </Project>
