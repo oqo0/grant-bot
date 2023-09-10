@@ -21,4 +21,4 @@
 
 #### 🕵️ About GrantBot
 
-This bot will allow you to simply and quickly add a system of titles and medals to your Discord server, which you can customize to your needs.
+This bot will allow you to simply and quickly add a system of titles and awards to your Discord server, which you can customize to your needs.
