@@ -1,7 +1,9 @@
 ﻿using Discord;
 using Discord.Interactions;
 using Discord.WebSocket;
+using GrantBot.Data;
 using GrantBot.Modules;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -30,24 +32,17 @@ public class Program
             .AddYamlFile("language.yml", false, true)
             .Build();
 
-        LogLevel logLevel;
-        switch (_logLevel.ToLower())
+        var logLevel = _logLevel.ToLower() switch
         {
-            case "info":
-                logLevel = LogLevel.Information;
-                break;
-            case "debug":
-                logLevel = LogLevel.Debug;
-                break;
-            case "trace":
-                logLevel = LogLevel.Trace;
-                break;
-            default: 
-                logLevel = LogLevel.Error;
-                break;
-        }
-        
+            "info" => LogLevel.Information,
+            "debug" => LogLevel.Debug,
+            "trace" => LogLevel.Trace,
+            _ => LogLevel.Error
+        };
+
         _services = new ServiceCollection()
+            .AddDbContext<GrantBotDbContext>(
+                options => options.UseNpgsql("Host=127.0.0.1;Port=5432;Database=grantbotdatabase;User Id=oqo0;Password=Poi132poi_"))
             .AddSingleton(_configuration)
             .AddSingleton(_socketConfig)
             .AddSingleton<DiscordSocketClient>()
