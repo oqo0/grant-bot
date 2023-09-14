@@ -8,6 +8,9 @@ bot-token: "0"
 # Id of a server which is going to be used for set up
 server-id: 0
 
+# PostgreSQL connection string
+db-connection-string: "connection string"
+
 # Playing a game module
 presence:
   enabled: False
