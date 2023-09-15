@@ -26,7 +26,7 @@ try
     
     builder.UseSerilog();
     
-    #region Configure configuration
+    #region Configure config file
 
     builder.ConfigureAppConfiguration(options =>
     {
