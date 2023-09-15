@@ -11,6 +11,10 @@ server-id: 0
 # PostgreSQL connection string
 db-connection-string: "connection string"
 
+# Log severity level
+# Options: Verbose, Debug, Info, Warning, Error, Critical
+log-severity: "Info"
+
 # Playing a game module
 presence:
   enabled: False
