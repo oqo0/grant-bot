@@ -2,6 +2,7 @@
 using Discord.Addons.Hosting;
 using Discord.Commands;
 using Discord.WebSocket;
+using GrantBot;
 using GrantBot.Data;
 using GrantBot.Modules;
 using Microsoft.EntityFrameworkCore;
@@ -72,6 +73,7 @@ try
     
     builder.ConfigureServices((context, services) =>
     {
+        services.AddHostedService<InteractionHandler>();
         services.AddDbContext<GrantBotDbContext>(options =>
         {
             options.UseNpgsql(context.Configuration["db-connection-string"]);
