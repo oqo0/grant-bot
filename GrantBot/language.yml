@@ -1,4 +1,8 @@
 # Bot messages that users can see
 
-language:
+lang:
   error: "An error occurred during the execution of the module."
+  
+  season:
+    modal-title: "Start new season"
+    modal-input: "Enter season name"

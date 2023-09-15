@@ -72,7 +72,7 @@ internal class InteractionHandler : DiscordClientService
                 .ContinueWith(async msg=> await msg.Result.DeleteAsync());
 
             await interaction.FollowupAsync(
-                _configuration["language:error"], ephemeral: true);
+                _configuration["lang:error"], ephemeral: true);
         }
 
         Logger.LogError(
