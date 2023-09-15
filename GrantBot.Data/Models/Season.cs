@@ -15,6 +15,6 @@ public class Season
     [Column]
     public DateTime StartDateTime { get; set; }
     
-    [InverseProperty(nameof(Award.User))]
+    [InverseProperty(nameof(Award.Season))]
     public virtual ICollection<Award> Awards { get; set; } = new List<Award>();
 }
