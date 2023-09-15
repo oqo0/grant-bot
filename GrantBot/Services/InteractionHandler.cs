@@ -7,7 +7,7 @@ using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace GrantBot;
+namespace GrantBot.Services;
 
 internal class InteractionHandler : DiscordClientService
 {
