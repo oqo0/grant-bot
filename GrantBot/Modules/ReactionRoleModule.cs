@@ -1,28 +1,32 @@
 using Discord;
+using Discord.Addons.Hosting;
+using Discord.Addons.Hosting.Util;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace GrantBot.Modules;
 
-public class ReactionRoleModule
+public class ReactionRoleModule : DiscordClientService
 {
-    private readonly DiscordSocketClient _client;
     private readonly IConfiguration _configuration;
-    private readonly ILogger<ReactionRoleModule> _logger;
 
     public ReactionRoleModule(
         DiscordSocketClient client,
-        IConfiguration configuration,
-        ILogger<ReactionRoleModule> logger)
+        ILogger<PlayingGameModule> logger,
+        IConfiguration configuration
+    ) : base(client, logger)
     {
-        _client = client;
         _configuration = configuration;
-        _logger = logger;
-        
-        _client.ReactionAdded += HandleReactionAdded;
     }
-
+    
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        await Client.WaitForReadyAsync(stoppingToken);
+        
+        Client.ReactionAdded += HandleReactionAdded;
+    }
+    
     private async Task HandleReactionAdded(
         Cacheable<IUserMessage, ulong> message,
         Cacheable<IMessageChannel, ulong> channel,
@@ -40,7 +44,7 @@ public class ReactionRoleModule
         if (reaction.User.Value is SocketGuildUser socketUser)
             await socketUser.AddRoleAsync(roleId);
         
-        _logger.LogInformation(
+        Logger.LogInformation(
             "User {Username} ({UserId}) received role {RoleId} by using a reaction.",
             reaction.User.Value.Username, reaction.User.Value.Id, roleId);
     }

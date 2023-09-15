@@ -1,134 +1,98 @@
 ﻿using Discord;
-using Discord.Interactions;
+using Discord.Addons.Hosting;
+using Discord.Commands;
 using Discord.WebSocket;
 using GrantBot.Data;
 using GrantBot.Modules;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Serilog;
-using Microsoft.Extensions.Logging;
 using Serilog.Events;
 
-namespace GrantBot;
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Error)
+    .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.Console()
+    .CreateLogger();
 
-public class Program
+try
 {
-    private readonly IConfiguration _configuration;
-    private readonly IServiceProvider _services;
+    Log.Information("Starting host");
     
-    private static string _logLevel = "info";
+    var builder = Host.CreateDefaultBuilder();
     
-    private readonly DiscordSocketConfig _socketConfig = new()
-    {
-        GatewayIntents = GatewayIntents.AllUnprivileged,
-        AlwaysDownloadUsers = true,
-    };
+    builder.UseSerilog();
+    
+    #region Configure configuration
 
-    private Program()
+    builder.ConfigureAppConfiguration(options =>
     {
-        _configuration = new ConfigurationBuilder()
-            .AddYamlFile("config.yml", false, true)
-            .AddYamlFile("language.yml", false, true)
-            .Build();
+        options.AddYamlFile("config.yml", false, true);
+        options.AddYamlFile("language.yml", false, true);
+    });
 
-        var logLevel = _logLevel.ToLower() switch
+    #endregion
+    
+    #region Configure Discord Bot Host
+
+    builder.ConfigureDiscordHost((context, config) =>
+    {
+        config.SocketConfig = new DiscordSocketConfig
         {
-            "info" => LogLevel.Information,
-            "debug" => LogLevel.Debug,
-            "trace" => LogLevel.Trace,
-            _ => LogLevel.Error
+            LogLevel = context.Configuration.GetValue<LogSeverity>("log-severity"),
+            AlwaysDownloadUsers = true,
+            MessageCacheSize = 200
         };
 
-        _services = new ServiceCollection()
-            .AddDbContext<GrantBotDbContext>(
-                options => options.UseNpgsql("Host=127.0.0.1;Port=5432;Database=grantbotdatabase;User Id=oqo0;Password=Poi132poi_"))
-            .AddSingleton(_configuration)
-            .AddSingleton(_socketConfig)
-            .AddSingleton<DiscordSocketClient>()
-            .AddSingleton(sp => new InteractionService(sp.GetRequiredService<DiscordSocketClient>()))
-            .AddSingleton<InteractionHandler>() 
-            .AddLogging(conf => conf.AddSerilog().SetMinimumLevel(logLevel))
-            .BuildServiceProvider();
+        config.Token = context.Configuration["bot-token"];
+    });
 
-        // registering ReactionRoleModule
-        var _ = new ReactionRoleModule(
-            _services.GetRequiredService<DiscordSocketClient>(),
-            _services.GetRequiredService<IConfiguration>(),
-            _services.GetRequiredService<ILogger<ReactionRoleModule>>());
-    }
+    #endregion
 
-    static void Main(string[] args)
+    #region Configure Interation handling
+
+    builder.UseCommandService((context, config) =>
     {
-        if (args.Length != 0)
-            _logLevel = args[0];
-        
-        Log.Logger = new LoggerConfiguration()
-            .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
-            .WriteTo.Console()
-            .CreateLogger();
-        
-        new Program()
-            .RunAsync()
-            .GetAwaiter()
-            .GetResult();
-    }
+        config.DefaultRunMode = RunMode.Async;
+        config.CaseSensitiveCommands = false;
+    });
     
-    private async Task RunAsync()
+    builder.UseInteractionService((context, config) =>
     {
-        var client = _services.GetRequiredService<DiscordSocketClient>();
+        config.LogLevel = context.Configuration.GetValue<LogSeverity>("log-severity");
+        config.UseCompiledLambda = true;
+    });
 
-        client.Log += LogAsync;
+    #endregion
 
-        await _services.GetRequiredService<InteractionHandler>()
-            .InitializeAsync();
-
-        await client.LoginAsync(TokenType.Bot, _configuration["bot-token"]);
-        await client.StartAsync();
-
-        await SetUpPresence(client);
-        
-        await Task.Delay(Timeout.Infinite);
-    }
-
-    internal static async Task LogAsync(LogMessage message)
-    {
-        var severity = message.Severity switch
-        {
-            LogSeverity.Critical => LogEventLevel.Fatal,
-            LogSeverity.Error => LogEventLevel.Error,
-            LogSeverity.Warning => LogEventLevel.Warning,
-            LogSeverity.Info => LogEventLevel.Information,
-            LogSeverity.Verbose => LogEventLevel.Verbose,
-            LogSeverity.Debug => LogEventLevel.Debug,
-            _ => LogEventLevel.Information
-        };
-        
-        Log.Write(
-            severity,
-            message.Exception,
-            "[{Source}] {Message}",
-            message.Source, message.Message);
-        
-        await Task.CompletedTask;
-    }
-
-    private async Task SetUpPresence(DiscordSocketClient client)
-    {
-        bool isPresenceEnabled = _configuration.GetValue<bool>("presence:enabled");
-        if (isPresenceEnabled)
-        {
-            string gameName = _configuration["presence:game-name"];
-            await client.SetGameAsync(gameName);
-        }
-    }
+    #region Configure Services
     
-    public static bool IsDebug()
+    builder.ConfigureServices((context, services) =>
     {
-        #if DEBUG
-            return true;
-        #else
-            return false;
-        #endif
-    }
+        services.AddDbContext<GrantBotDbContext>(options =>
+        {
+            options.UseNpgsql(context.Configuration["db-connection-string"]);
+        });
+        services.AddHostedService<PlayingGameModule>();
+        services.AddHostedService<ReactionRoleModule>();
+    });
+
+    #endregion
+
+    var host = builder.Build();
+    
+    await host.RunAsync();
+    return 0;
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Host terminated unexpectedly");
+    return 1;
+}
+finally
+{
+    Log.CloseAndFlush();
 }
