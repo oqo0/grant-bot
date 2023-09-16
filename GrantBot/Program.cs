@@ -2,9 +2,11 @@
 using Discord.Addons.Hosting;
 using Discord.Commands;
 using Discord.WebSocket;
-using GrantBot;
 using GrantBot.Data;
+using GrantBot.Data.Repositories;
+using GrantBot.Data.Repositories.Impl;
 using GrantBot.Modules;
+using GrantBot.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -73,13 +75,18 @@ try
     
     builder.ConfigureServices((context, services) =>
     {
-        services.AddHostedService<InteractionHandler>();
         services.AddDbContext<GrantBotDbContext>(options =>
         {
             options.UseNpgsql(context.Configuration["db-connection-string"]);
         });
+        
+        services.AddHostedService<InteractionHandler>();
         services.AddHostedService<PlayingGameModule>();
         services.AddHostedService<ReactionRoleModule>();
+        
+        services.AddScoped<IAwardRepository, AwardRepository>();
+        services.AddScoped<ISeasonRepository, SeasonRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
     });
 
     #endregion
