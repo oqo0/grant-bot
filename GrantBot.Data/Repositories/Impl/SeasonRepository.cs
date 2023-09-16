@@ -11,12 +11,12 @@ public class SeasonRepository : ISeasonRepository
         _context = context;
     }
     
-    public Season Create(Season data)
+    public long Create(Season data)
     {
         _context.Add(data);
         _context.SaveChanges();
 
-        return data;
+        return data.Id;
     }
 
     public Season? GetById(long id)

@@ -11,12 +11,12 @@ public class AwardRepository : IAwardRepository
         _context = context;
     }
     
-    public Award Create(Award data)
+    public long Create(Award data)
     {
         _context.Add(data);
         _context.SaveChanges();
 
-        return data;
+        return data.Id;
     }
 
     public Award? GetById(long id)

@@ -11,12 +11,12 @@ public class UserRepository : IUserRepository
         _context = context;
     }
     
-    public User Create(User data)
+    public long Create(User data)
     {
         _context.Add(data);
         _context.SaveChanges();
 
-        return data;
+        return data.Id;
     }
 
     public User? GetById(long id)
