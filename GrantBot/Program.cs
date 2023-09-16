@@ -33,8 +33,8 @@ try
 
     builder.ConfigureAppConfiguration(options =>
     {
-        options.AddYamlFile("config.yml", false, true);
-        options.AddYamlFile("language.yml", false, true);
+        options.AddYamlFile("config.yml", false);
+        options.AddYamlFile("language.yml", false);
     });
 
     #endregion
