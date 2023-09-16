@@ -13,6 +13,9 @@ using ContextType = Discord.Interactions.ContextType;
 
 namespace GrantBot.Modules;
 
+[Discord.Interactions.RequireUserPermission(GuildPermission.Administrator)]
+[Discord.Interactions.RequireContext(ContextType.Guild)]
+[EnabledInDm(false)]
 public class SeasonModule : InteractionModuleBase<SocketInteractionContext>
 {
     private readonly ISeasonRepository _seasonRepository;
@@ -30,9 +33,6 @@ public class SeasonModule : InteractionModuleBase<SocketInteractionContext>
     }
     
     [SlashCommand("season-new", "Starts a new season.")]
-    [Discord.Interactions.RequireUserPermission(GuildPermission.Administrator)]
-    [Discord.Interactions.RequireContext(ContextType.Guild)]
-    [EnabledInDm(false)]
     public async Task ShowNewSeasonModal()
     {
         await Context.Interaction.RespondWithModalAsync<StartNewSeasonModal>(
