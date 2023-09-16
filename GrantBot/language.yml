@@ -6,3 +6,4 @@ lang:
   season:
     modal-title: "Start new season"
     modal-input: "Enter season name"
+    season-created: "New season {Name} with id `{Id}` was started."
