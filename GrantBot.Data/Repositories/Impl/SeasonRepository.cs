@@ -11,15 +11,15 @@ public class SeasonRepository : ISeasonRepository
         _context = context;
     }
     
-    public ulong Create(Season data)
+    public Season Create(Season data)
     {
         _context.Add(data);
         _context.SaveChanges();
 
-        return data.Id;
+        return data;
     }
 
-    public Season? GetById(ulong id)
+    public Season? GetById(long id)
     {
         return _context.Seasons.FirstOrDefault(x => x.Id == id);
     }
@@ -45,7 +45,7 @@ public class SeasonRepository : ISeasonRepository
         return amountOfChanges != 0;
     }
 
-    public bool Delete(ulong id)
+    public bool Delete(long id)
     {
         var season = GetById(id);
 

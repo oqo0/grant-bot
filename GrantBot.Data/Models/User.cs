@@ -7,7 +7,7 @@ namespace GrantBot.Data.Models;
 public class User
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public ulong Id { get; set; }
+    public long Id { get; set; }
     
     [Column, MaxLength(255)]
     public string? Rank { get; set; }

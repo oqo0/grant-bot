@@ -7,7 +7,7 @@ namespace GrantBot.Data.Models;
 public class Award
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public ulong Id { get; set; }
+    public long Id { get; set; }
     
     [Column, StringLength(255)]
     public string? Medal { get; set; }
@@ -15,12 +15,12 @@ public class Award
     [Column]
     public DateTime ReceivedDateTime { get; set; }
     
-    public ulong OwnerId { get; set; }
+    public long OwnerId { get; set; }
     
     [ForeignKey(nameof(OwnerId))]
     public virtual User User { get; set; }
     
-    public ulong SeasonReceivedIn { get; set; }
+    public long SeasonReceivedIn { get; set; }
     
     [ForeignKey(nameof(SeasonReceivedIn))]
     public virtual Season Season { get; set; }

@@ -11,15 +11,15 @@ public class UserRepository : IUserRepository
         _context = context;
     }
     
-    public ulong Create(User data)
+    public User Create(User data)
     {
         _context.Add(data);
         _context.SaveChanges();
 
-        return data.Id;
+        return data;
     }
 
-    public User? GetById(ulong id)
+    public User? GetById(long id)
     {
         return _context.Users.FirstOrDefault(x => x.Id == id);
     }
@@ -44,7 +44,7 @@ public class UserRepository : IUserRepository
         return amountOfChanges != 0;
     }
 
-    public bool Delete(ulong id)
+    public bool Delete(long id)
     {
         var user = GetById(id);
 

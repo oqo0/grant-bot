@@ -11,15 +11,15 @@ public class AwardRepository : IAwardRepository
         _context = context;
     }
     
-    public ulong Create(Award data)
+    public Award Create(Award data)
     {
         _context.Add(data);
         _context.SaveChanges();
 
-        return data.Id;
+        return data;
     }
 
-    public Award? GetById(ulong id)
+    public Award? GetById(long id)
     {
         return _context.Awards.FirstOrDefault(x => x.Id == id);
     }
@@ -48,7 +48,7 @@ public class AwardRepository : IAwardRepository
         return amountOfChanges != 0;
     }
 
-    public bool Delete(ulong id)
+    public bool Delete(long id)
     {
         var award = GetById(id);
 
