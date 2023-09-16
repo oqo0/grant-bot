@@ -24,6 +24,11 @@ public class UserRepository : IUserRepository
         return _context.Users.FirstOrDefault(x => x.Id == id);
     }
 
+    public User? GetByDiscordId(ulong userDiscordId)
+    {
+        return _context.Users.FirstOrDefault(x => x.DiscordId == userDiscordId);
+    }
+    
     public IList<User> GetAll()
     {
         return _context.Users.ToList();

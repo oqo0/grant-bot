@@ -9,6 +9,9 @@ public class User
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long Id { get; set; }
     
+    [Column]
+    public ulong DiscordId { get; set; }
+    
     [Column, MaxLength(255)]
     public string? Rank { get; set; }
     
