@@ -26,3 +26,14 @@ reaction-role:
   role-id: 0
   message-id: 0
   emote-name: "✅"
+
+# Ranks are changed when user receives a corresponding role
+ranks:
+  - name: "Rank1" # Name should be unique for each rank
+    id: 0 # Discord role id
+    priority: 0 # The higher the priority, the higher the role
+    image: "ranks/rank1.png" # the path relative to the location of the bot executable
+  - name: "Rank2"
+    id: 1
+    priority: 1
+    image: "ranks/rank2.png"
