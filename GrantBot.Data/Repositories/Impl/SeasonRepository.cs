@@ -31,7 +31,7 @@ public class SeasonRepository : ISeasonRepository
 
     public Season? GetCurrentSeason()
     {
-        return _context.Seasons.LastOrDefault();
+        return _context.Seasons.OrderBy(season => season.StartDateTime).LastOrDefault();
     }
     
     public bool Update(Season data)
