@@ -80,6 +80,9 @@ namespace GrantBot.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<decimal>("DiscordId")
+                        .HasColumnType("numeric(20,0)");
+
                     b.Property<string>("Rank")
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
