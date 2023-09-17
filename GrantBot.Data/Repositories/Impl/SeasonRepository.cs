@@ -29,6 +29,11 @@ public class SeasonRepository : ISeasonRepository
         return _context.Seasons.ToList();
     }
 
+    public Season? GetCurrentSeason()
+    {
+        return _context.Seasons.LastOrDefault();
+    }
+    
     public bool Update(Season data)
     {
         var season = GetById(data.Id);
