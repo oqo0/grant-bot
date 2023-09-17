@@ -47,7 +47,8 @@ try
         {
             LogLevel = context.Configuration.GetValue<LogSeverity>("log-severity"),
             AlwaysDownloadUsers = true,
-            MessageCacheSize = 200
+            MessageCacheSize = 200,
+            GatewayIntents = GatewayIntents.All | GatewayIntents.GuildMembers
         };
 
         config.Token = context.Configuration["bot-token"];
@@ -83,6 +84,7 @@ try
         services.AddHostedService<InteractionHandler>();
         services.AddHostedService<PlayingGameModule>();
         services.AddHostedService<ReactionRoleModule>();
+        services.AddHostedService<UserModule>();
         
         services.AddScoped<IAwardRepository, AwardRepository>();
         services.AddScoped<ISeasonRepository, SeasonRepository>();
