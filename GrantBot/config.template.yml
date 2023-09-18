@@ -45,7 +45,9 @@ awards:
     name: "Medal 1" # Medal name which is going to be shows
     importance: 1 # How many points the award gives for the user rating
     image: "assets/medals/medal1.png" # the path relative to the location of the bot executable
+    badge: "assets/medals/medal1_badge.png" # going to be used as a smaller version of an image
   - id: "Medal2"
     name: "Medal Something"
     importance: 1
     image: "assets/medals/medal2.png"
+    badge: "assets/medals/medal2_badge.png"
