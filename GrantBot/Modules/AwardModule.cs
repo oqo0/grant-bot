@@ -94,6 +94,13 @@ public class AwardModule : InteractionModuleBase<SocketInteractionContext>
             awardReceiver.Id);
     }
 
+    [SlashCommand("awards", "Show awards of a user from a season.")]
+    [RequireUserPermission(GuildPermission.Administrator)]
+    public async Task Awards(SocketGuildUser guildUser, string season)
+    {
+        throw new NotImplementedException();
+    }
+    
     private bool IsAwardValid(string awardId)
         => _registeredAwards.Any(award => award.Id == awardId);
 }
