@@ -37,3 +37,14 @@ ranks:
     id: 1
     priority: 1
     image: "ranks/rank2.png"
+
+# User's awards are added and removed by using /award and /remove-award slash commands
+awards:
+  - id: "Medal1" # Unique name for each award without spaces
+    name: "Medal 1" # Medal name which is going to be shows
+    importance: 1 # How many points the award gives for the user rating
+    image: "assets/medals/medal1.png" # the path relative to the location of the bot executable
+  - id: "Medal2"
+    name: "Medal Something"
+    importance: 1
+    image: "assets/medals/medal2.png"

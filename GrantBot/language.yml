@@ -7,3 +7,9 @@ lang:
     modal-title: "Start new season"
     modal-input: "Enter season name"
     season-created: "New season {Name} with id `{Id}` was started."
+    not-found: "You need to create a season to give out awards."
+  
+  award:
+    not-found: "Award with this name was not found."
+    gave: "You gave {AwardName} to user {UserName}."
+    received: "Congratulations, {UserPing}! You received the {MedalName} award!"
