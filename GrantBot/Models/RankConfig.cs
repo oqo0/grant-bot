@@ -2,7 +2,7 @@ using YamlDotNet.Serialization;
 
 namespace GrantBot.Models;
 
-public class Rank
+public class RankConfig
 {
     public string Name { get; set; }
     public ulong Id { get; set; }
