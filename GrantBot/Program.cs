@@ -5,6 +5,7 @@ using Discord.WebSocket;
 using GrantBot.Data;
 using GrantBot.Data.Repositories;
 using GrantBot.Data.Repositories.Impl;
+using GrantBot.Models;
 using GrantBot.Modules;
 using GrantBot.Services;
 using Microsoft.EntityFrameworkCore;
@@ -89,6 +90,11 @@ try
         services.AddScoped<IAwardRepository, AwardRepository>();
         services.AddScoped<ISeasonRepository, SeasonRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        
+        services.AddSingleton<IList<AwardConfig>>(
+            context.Configuration.GetSection("awards").Get<List<AwardConfig>>());
+        services.AddSingleton<IList<RankConfig>>(
+            context.Configuration.GetSection("ranks").Get<List<RankConfig>>());
     });
 
     #endregion

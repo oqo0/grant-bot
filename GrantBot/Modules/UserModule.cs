@@ -13,20 +13,20 @@ namespace GrantBot.Modules;
 public class UserModule : DiscordClientService
 {
     private readonly IUserRepository _userRepository;
-    private readonly IList<Rank> _registeredRanks;
     private readonly IConfiguration _configuration;
+    private readonly IList<RankConfig> _registeredRanks;
 
     public UserModule(
         DiscordSocketClient client,
         IUserRepository userRepository,
         ILogger<PlayingGameModule> logger,
-        IConfiguration configuration
+        IConfiguration configuration,
+        IList<RankConfig> registeredRanks
         ) : base(client, logger)
     {
         _userRepository = userRepository;
         _configuration = configuration;
-        
-        _registeredRanks = _configuration.GetSection("ranks").Get<List<Rank>>();
+        _registeredRanks = registeredRanks;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
