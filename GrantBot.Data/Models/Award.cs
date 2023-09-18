@@ -10,6 +10,9 @@ public class Award
     public long Id { get; set; }
     
     [Column, StringLength(255)]
+    public string? UniqueId { get; set; }
+    
+    [Column, StringLength(255)]
     public string? Medal { get; set; }
     
     [Column]
