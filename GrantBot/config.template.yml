@@ -39,6 +39,7 @@ ranks:
     image: "ranks/rank2.png"
 
 # User's awards are added and removed by using /award and /remove-award slash commands
+# Discord slash command auto-complete supports max of 25 entries
 awards:
   - id: "Medal1" # Unique name for each award without spaces
     name: "Medal 1" # Medal name which is going to be shows
