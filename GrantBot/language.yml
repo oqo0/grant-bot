@@ -13,3 +13,4 @@ lang:
     not-found: "Award with this name was not found."
     gave: "You gave {AwardName} to user {UserName}."
     received: "Congratulations, {UserPing}! You received the {MedalName} award!"
+    received-image: "You received an award!"
