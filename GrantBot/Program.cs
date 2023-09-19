@@ -8,6 +8,8 @@ using GrantBot.Data.Repositories.Impl;
 using GrantBot.Models;
 using GrantBot.Modules;
 using GrantBot.Services;
+using GrantBot.Services.Painters;
+using GrantBot.Services.Painters.Impl;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -86,6 +88,8 @@ try
         services.AddHostedService<PlayingGameModule>();
         services.AddHostedService<ReactionRoleModule>();
         services.AddHostedService<UserModule>();
+        
+        services.AddSingleton<IAwardReceivedPainter, AwardReceivedPainter>();
         
         services.AddScoped<IAwardRepository, AwardRepository>();
         services.AddScoped<ISeasonRepository, SeasonRepository>();

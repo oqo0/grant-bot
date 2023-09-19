@@ -1,6 +1,8 @@
+using GrantBot.Models;
+
 namespace GrantBot.Services.Painters;
 
-public interface IAwardReceivedPainter : IPainter<string>
+public interface IAwardReceivedPainter : IPainter<AwardConfig>
 {
     
 }
