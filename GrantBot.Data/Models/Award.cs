@@ -16,6 +16,9 @@ public class Award
     public string? Medal { get; set; }
     
     [Column]
+    public uint Weight { get; set; }
+    
+    [Column]
     public DateTime ReceivedDateTime { get; set; }
     
     public long OwnerId { get; set; }

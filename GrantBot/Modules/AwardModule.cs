@@ -68,6 +68,7 @@ public class AwardModule : InteractionModuleBase<SocketInteractionContext>
         {
             UniqueId = awardConfig.Id,
             Medal = awardConfig.Name,
+            Weight = awardConfig.Importance,
             ReceivedDateTime = DateTime.UtcNow,
             Season = currentSeason,
             User = user

@@ -41,6 +41,7 @@ public class AwardRepository : IAwardRepository
         award.SeasonReceivedIn = data.SeasonReceivedIn;
         award.OwnerId = data.OwnerId;
         award.Medal = data.Medal;
+        award.Weight = data.Weight;
         award.ReceivedDateTime = data.ReceivedDateTime;
 
         int amountOfChanges = _context.SaveChanges();
