@@ -2,7 +2,7 @@ using Discord;
 using Discord.Interactions;
 using Discord.WebSocket;
 using GrantBot.Data.Repositories;
-using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Configuration;
 
 namespace GrantBot.Modules;
 
@@ -12,13 +12,16 @@ public class TopModule : InteractionModuleBase<SocketInteractionContext>
 {
     private readonly IUserRepository _userRepository;
     private readonly DiscordSocketClient _discordSocketClient;
+    private readonly IConfiguration _configuration;
     
     public TopModule(
         IUserRepository userRepository,
-        DiscordSocketClient discordSocketClient)
+        DiscordSocketClient discordSocketClient,
+        IConfiguration configuration)
     {
         _userRepository = userRepository;
         _discordSocketClient = discordSocketClient;
+        _configuration = configuration;
     }
 
     [SlashCommand("top", "Shows top for a current season.")]
@@ -28,7 +31,7 @@ public class TopModule : InteractionModuleBase<SocketInteractionContext>
 
         var embedBuilder = new EmbedBuilder()
             .WithColor(Discord.Color.Default)
-            .WithTitle("Top 10 users by medals");
+            .WithTitle(_configuration["lang:award:top"]);
 
         foreach (var user in topUsers)
         {
