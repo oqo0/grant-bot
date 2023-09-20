@@ -1,11 +1,13 @@
+using System.ComponentModel;
 using Discord;
 using Discord.Interactions;
 using Discord.WebSocket;
+using GrantBot.AutocompleteHandlers;
 using GrantBot.Data.Models;
 using GrantBot.Data.Repositories;
 using GrantBot.Models;
-using GrantBot.Services;
 using GrantBot.Services.Painters;
+using GrantBot.Utils.TypeConverters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp.Formats.Png;
@@ -22,7 +24,6 @@ public class AwardModule : InteractionModuleBase<SocketInteractionContext>
     private readonly IAwardRepository _awardRepository;
     private readonly ILogger<SeasonModule> _logger;
     private readonly IConfiguration _configuration;
-    private readonly IList<AwardConfig> _registeredAwards;
     private readonly IAwardReceivedPainter _awardReceivedPainter;
 
     public AwardModule(
@@ -31,7 +32,6 @@ public class AwardModule : InteractionModuleBase<SocketInteractionContext>
         IAwardRepository awardRepository,
         ILogger<SeasonModule> logger,
         IConfiguration configuration,
-        IList<AwardConfig> registeredAwards,
         IAwardReceivedPainter awardReceivedPainter)
     {
         _userRepository = userRepository;
@@ -39,7 +39,6 @@ public class AwardModule : InteractionModuleBase<SocketInteractionContext>
         _awardRepository = awardRepository;
         _logger = logger;
         _configuration = configuration;
-        _registeredAwards = registeredAwards;
         _awardReceivedPainter = awardReceivedPainter;
     }
 
@@ -47,17 +46,10 @@ public class AwardModule : InteractionModuleBase<SocketInteractionContext>
     [RequireUserPermission(GuildPermission.Administrator)]
     public async Task AwardUser(
         SocketGuildUser awardReceiver,
-        [Autocomplete(typeof(AwardAutocompleteHandler))] string awardId,
-        bool pingUser)
+        [Autocomplete(typeof(AwardAutocompleteHandler)),
+         TypeConverter(typeof(AwardConfigTypeConverter))] AwardConfig awardConfig,
+        bool pingUser = true)
     {
-        var awardConfig = _registeredAwards.FirstOrDefault(a => a.Id == awardId);
-
-        if (awardConfig is null)
-        {
-            await RespondAsync(_configuration["lang:award:not-found"], ephemeral: true);
-            return;
-        }
-
         var currentSeason = _seasonRepository.GetCurrentSeason();
 
         if (currentSeason is null)
@@ -74,8 +66,8 @@ public class AwardModule : InteractionModuleBase<SocketInteractionContext>
 
         var newAward = new Award
         {
-            UniqueId = awardId,
-            Medal = awardId,
+            UniqueId = awardConfig.Id,
+            Medal = awardConfig.Name,
             ReceivedDateTime = DateTime.UtcNow,
             Season = currentSeason,
             User = user
@@ -95,7 +87,7 @@ public class AwardModule : InteractionModuleBase<SocketInteractionContext>
 
         if (!pingUser)
             return;
-            
+        
         using var stream = new MemoryStream();
         var awardReceivedImage = _awardReceivedPainter.Draw(awardConfig);
         await awardReceivedImage.SaveAsync(stream, new PngEncoder());
