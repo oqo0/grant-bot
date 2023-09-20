@@ -5,8 +5,10 @@ using GrantBot.Data.Models;
 using GrantBot.Data.Repositories;
 using GrantBot.Models;
 using GrantBot.Services;
+using GrantBot.Services.Painters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using SixLabors.ImageSharp.Formats.Png;
 using SmartFormat;
 
 namespace GrantBot.Modules;
@@ -21,6 +23,7 @@ public class AwardModule : InteractionModuleBase<SocketInteractionContext>
     private readonly ILogger<SeasonModule> _logger;
     private readonly IConfiguration _configuration;
     private readonly IList<AwardConfig> _registeredAwards;
+    private readonly IAwardReceivedPainter _awardReceivedPainter;
 
     public AwardModule(
         IUserRepository userRepository,
@@ -28,7 +31,8 @@ public class AwardModule : InteractionModuleBase<SocketInteractionContext>
         IAwardRepository awardRepository,
         ILogger<SeasonModule> logger,
         IConfiguration configuration,
-        IList<AwardConfig> registeredAwards)
+        IList<AwardConfig> registeredAwards,
+        IAwardReceivedPainter awardReceivedPainter)
     {
         _userRepository = userRepository;
         _seasonRepository = seasonRepository;
@@ -36,6 +40,7 @@ public class AwardModule : InteractionModuleBase<SocketInteractionContext>
         _logger = logger;
         _configuration = configuration;
         _registeredAwards = registeredAwards;
+        _awardReceivedPainter = awardReceivedPainter;
     }
 
     [SlashCommand("award", "Gives an award to a specific user.")]
@@ -43,9 +48,11 @@ public class AwardModule : InteractionModuleBase<SocketInteractionContext>
     public async Task AwardUser(
         SocketGuildUser awardReceiver,
         [Autocomplete(typeof(AwardAutocompleteHandler))] string awardId,
-        bool pingReceiver)
+        bool pingUser)
     {
-        if (!IsAwardValid(awardId))
+        var awardConfig = _registeredAwards.FirstOrDefault(a => a.Id == awardId);
+
+        if (awardConfig is null)
         {
             await RespondAsync(_configuration["lang:award:not-found"], ephemeral: true);
             return;
@@ -81,17 +88,22 @@ public class AwardModule : InteractionModuleBase<SocketInteractionContext>
             new { AwardName = newAward.Medal, UserName = awardReceiver.Username });
         await RespondAsync(respond, ephemeral: true);
         
-        if (pingReceiver)
-        {
-            await FollowupAsync(
-                Smart.Format(_configuration["lang:award:received"],
-                    new { UserPing = awardReceiver.Mention, MedalName = newAward.Medal }));
-        }
-        
         _logger.LogInformation(
             "User {UserName} ({UserId}) gave an award {AwardId} to user {ReceiverName} ({ReceiverId}).",
             awardReceiver.Username, awardReceiver.Id, newAward.UniqueId, awardReceiver.Username,
             awardReceiver.Id);
+
+        if (!pingUser)
+            return;
+            
+        using var stream = new MemoryStream();
+        var awardReceivedImage = _awardReceivedPainter.Draw(awardConfig);
+        await awardReceivedImage.SaveAsync(stream, new PngEncoder());
+    
+        await FollowupWithFileAsync(
+            new FileAttachment(stream, "newAward.png"),
+            Smart.Format(_configuration["lang:award:received"],
+                new { UserPing = awardReceiver.Mention, MedalName = newAward.Medal }));
     }
 
     [SlashCommand("awards", "Show awards of a user from a season.")]
@@ -100,7 +112,4 @@ public class AwardModule : InteractionModuleBase<SocketInteractionContext>
     {
         throw new NotImplementedException();
     }
-    
-    private bool IsAwardValid(string awardId)
-        => _registeredAwards.Any(award => award.Id == awardId);
 }
