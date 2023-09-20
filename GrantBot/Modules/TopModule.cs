@@ -1,8 +1,13 @@
+using System.ComponentModel;
 using Discord;
 using Discord.Interactions;
 using Discord.WebSocket;
+using GrantBot.AutocompleteHandlers;
+using GrantBot.Data.Models;
 using GrantBot.Data.Repositories;
+using GrantBot.Utils.TypeConverters;
 using Microsoft.Extensions.Configuration;
+using SmartFormat;
 
 namespace GrantBot.Modules;
 
@@ -24,14 +29,34 @@ public class TopModule : InteractionModuleBase<SocketInteractionContext>
         _configuration = configuration;
     }
 
-    [SlashCommand("top", "Shows top for a current season.")]
-    public async Task Top()
+    [SlashCommand("top", "Shows top by season.")]
+    public async Task Top([Autocomplete(typeof(SeasonAutocompleteHandler)),
+                           TypeConverter(typeof(SeasonTypeConverter))] Season? season = null)
     {
-        var topUsers = _userRepository.GetTopUsers(10);
+        int topSize = _configuration.GetValue<int>("users-in-top");
 
+        IList<User> topUsers;
+        
+        if (season is null)
+            topUsers = _userRepository.GetTopUsers(topSize);
+        else 
+            topUsers = _userRepository.GetTopUsersBySeason(topSize, season.Id);
+
+        var embedBuilder = PrepareEmbedBuilder(topUsers, season);
+        await RespondAsync(embeds: new [] { embedBuilder.Build() });
+    }
+
+    private EmbedBuilder PrepareEmbedBuilder(IList<User> topUsers, Season? season)
+    {
         var embedBuilder = new EmbedBuilder()
             .WithColor(Discord.Color.Default)
-            .WithTitle(_configuration["lang:award:top"]);
+            .WithTitle(Smart.Format(
+                _configuration["lang:award:top"] + (season is null ? _configuration["lang:award:in-season"] : ""),
+                new 
+                { 
+                    TopSize = topUsers.Count, 
+                    SeasonName = season?.Name 
+                }));
 
         foreach (var user in topUsers)
         {
@@ -45,6 +70,6 @@ public class TopModule : InteractionModuleBase<SocketInteractionContext>
             });
         }
 
-        await RespondAsync(embeds: new [] { embedBuilder.Build() });
+        return embedBuilder;
     }
 }
