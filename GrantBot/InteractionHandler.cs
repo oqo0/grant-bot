@@ -10,7 +10,7 @@ using GrantBot.Utils.TypeConverters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace GrantBot.Services;
+namespace GrantBot;
 
 internal class InteractionHandler : DiscordClientService
 {
