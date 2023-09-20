@@ -35,12 +35,12 @@ internal class InteractionHandler : DiscordClientService
     {
         Client.InteractionCreated += HandleInteraction;
         
-        await _interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
-        await Client.WaitForReadyAsync(stoppingToken);
-
         _interactionService.AddTypeConverter<AwardConfig>(new AwardConfigTypeConverter());
         _interactionService.AddTypeConverter<Season>(new SeasonTypeConverter());
         
+        await _interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
+        await Client.WaitForReadyAsync(stoppingToken);
+
         var serverId = _configuration.GetValue<ulong>("server-id");
         await _interactionService.RegisterCommandsToGuildAsync(serverId);
     }
