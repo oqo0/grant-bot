@@ -2,12 +2,12 @@
 using Discord.Addons.Hosting;
 using Discord.Commands;
 using Discord.WebSocket;
+using GrantBot;
 using GrantBot.Data;
 using GrantBot.Data.Repositories;
 using GrantBot.Data.Repositories.Impl;
 using GrantBot.Models;
 using GrantBot.Modules;
-using GrantBot.Services;
 using GrantBot.Services.Painters;
 using GrantBot.Services.Painters.Impl;
 using Microsoft.EntityFrameworkCore;
