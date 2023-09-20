@@ -1,4 +1,5 @@
 using GrantBot.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace GrantBot.Data.Repositories.Impl;
 
@@ -32,6 +33,7 @@ public class UserRepository : IUserRepository
     public IList<User> GetTopUsers(int amount)
     {
         return _context.Users
+            .Include(u => u.Awards)
             .OrderBy(u => u.Awards.Sum(a => a.Weight))
             .Take(amount)
             .ToList();
