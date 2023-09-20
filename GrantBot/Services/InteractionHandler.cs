@@ -4,6 +4,9 @@ using Discord.Addons.Hosting;
 using Discord.Addons.Hosting.Util;
 using Discord.Interactions;
 using Discord.WebSocket;
+using GrantBot.Data.Models;
+using GrantBot.Models;
+using GrantBot.Utils.TypeConverters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -31,10 +34,13 @@ internal class InteractionHandler : DiscordClientService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         Client.InteractionCreated += HandleInteraction;
-
+        
         await _interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
         await Client.WaitForReadyAsync(stoppingToken);
 
+        _interactionService.AddTypeConverter<AwardConfig>(new AwardConfigTypeConverter());
+        _interactionService.AddTypeConverter<Season>(new SeasonTypeConverter());
+        
         var serverId = _configuration.GetValue<ulong>("server-id");
         await _interactionService.RegisterCommandsToGuildAsync(serverId);
     }
