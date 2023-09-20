@@ -28,7 +28,15 @@ public class UserRepository : IUserRepository
     {
         return _context.Users.FirstOrDefault(x => x.DiscordId == userDiscordId);
     }
-    
+
+    public IList<User> GetTopUsers(int amount)
+    {
+        return _context.Users
+            .OrderBy(u => u.Awards.Sum(a => a.Weight))
+            .Take(amount)
+            .ToList();
+    }
+
     public IList<User> GetAll()
     {
         return _context.Users.ToList();
