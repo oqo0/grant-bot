@@ -90,6 +90,7 @@ try
         services.AddHostedService<UserModule>();
         
         services.AddSingleton<IAwardReceivedPainter, AwardReceivedPainter>();
+        services.AddSingleton<IProfileInfoPainter, ProfileInfoPainter>();
         
         services.AddScoped<IAwardRepository, AwardRepository>();
         services.AddScoped<ISeasonRepository, SeasonRepository>();
