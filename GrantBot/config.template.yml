@@ -27,6 +27,9 @@ reaction-role:
   message-id: 0
   emote-name: "✅"
 
+# Amount of users to show in tops
+users-in-top: 10
+
 # Ranks are changed when user receives a corresponding role
 ranks:
   - name: "Rank1" # Name should be unique for each rank

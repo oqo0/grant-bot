@@ -14,4 +14,5 @@ lang:
     gave: "You gave {AwardName} to user {UserName}."
     received: "Congratulations, {UserPing}! You received the {MedalName} award!"
     received-image: "You received an award!"
-    top: "Top 10 users by medals"
+    top: "Top {TopSize} users by medals"
+    in-season: " | in season {SeasonName}"
