@@ -4,7 +4,7 @@ using GrantBot.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace GrantBot.Services;
+namespace GrantBot.AutocompleteHandlers;
 
 public class AwardAutocompleteHandler : AutocompleteHandler
 {
