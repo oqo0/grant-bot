@@ -21,7 +21,7 @@ public class SeasonAutocompleteHandler : AutocompleteHandler
         // max 25 suggestions at a time (Discord API limit)
         var lastSeasons = seasonRepository
             .GetSeasons(25)
-            .Select(s => new AutocompleteResult($"{s.Id}) {s.Name}", s.Id));
+            .Select(s => new AutocompleteResult(s.Name, s.Id));
         
         return AutocompletionResult.FromSuccess(lastSeasons);
     }

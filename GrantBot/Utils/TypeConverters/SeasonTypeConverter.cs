@@ -37,5 +37,5 @@ public class SeasonTypeConverter : TypeConverter
     }
 
     public override ApplicationCommandOptionType GetDiscordType()
-        => ApplicationCommandOptionType.String;
+        => ApplicationCommandOptionType.Integer;
 }
