@@ -29,6 +29,14 @@ public class SeasonRepository : ISeasonRepository
         return _context.Seasons.ToList();
     }
 
+    public IList<Season> GetSeasons(int amount)
+    {
+        return _context.Seasons
+            .OrderByDescending(x => x.StartDateTime)
+            .Take(amount)
+            .ToList();
+    }
+    
     public Season? GetCurrentSeason()
     {
         return _context.Seasons.OrderBy(season => season.StartDateTime).LastOrDefault();
