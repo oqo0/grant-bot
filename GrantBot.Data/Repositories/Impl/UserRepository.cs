@@ -39,6 +39,17 @@ public class UserRepository : IUserRepository
             .ToList();
     }
 
+    public IList<User> GetTopUsersBySeason(int amount, long seasonId)
+    {
+        return _context.Users
+            .Include(u => u.Awards)
+            .OrderBy(u => u.Awards
+                .Where(a => a.Season.Id == seasonId)
+                .Sum(a => a.Weight))
+            .Take(amount)
+            .ToList();
+    }
+
     public IList<User> GetAll()
     {
         return _context.Users.ToList();
