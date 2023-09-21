@@ -13,12 +13,12 @@ namespace GrantBot.Modules.InteractionModules;
 
 [RequireContext(ContextType.Guild)]
 [EnabledInDm(false)]
-public class ProfileModule : InteractionModuleBase<SocketInteractionContext>
+public class UserProfileInteractionModule : InteractionModuleBase<SocketInteractionContext>
 {
     private readonly IProfileInfoPainter _profileInfoPainter;
     private readonly IUserRepository _userRepository;
 
-    public ProfileModule(
+    public UserProfileInteractionModule(
         IProfileInfoPainter profileInfoPainter,
         IUserRepository userRepository)
     {

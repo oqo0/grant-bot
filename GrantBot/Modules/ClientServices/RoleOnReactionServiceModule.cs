@@ -7,13 +7,13 @@ using Microsoft.Extensions.Logging;
 
 namespace GrantBot.Modules.ClientServices;
 
-public class ReactionRoleModule : DiscordClientService
+public class RoleOnReactionServiceModule : DiscordClientService
 {
     private readonly IConfiguration _configuration;
 
-    public ReactionRoleModule(
+    public RoleOnReactionServiceModule(
         DiscordSocketClient client,
-        ILogger<PlayingGameModule> logger,
+        ILogger<PlayGameServiceModule> logger,
         IConfiguration configuration
     ) : base(client, logger)
     {

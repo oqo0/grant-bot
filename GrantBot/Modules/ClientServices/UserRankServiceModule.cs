@@ -10,16 +10,16 @@ using Microsoft.Extensions.Logging;
 
 namespace GrantBot.Modules.ClientServices;
 
-public class UserModule : DiscordClientService
+public class UserRankServiceModule : DiscordClientService
 {
     private readonly IUserRepository _userRepository;
     private readonly IConfiguration _configuration;
     private readonly IList<RankConfig> _registeredRanks;
 
-    public UserModule(
+    public UserRankServiceModule(
         DiscordSocketClient client,
         IUserRepository userRepository,
-        ILogger<PlayingGameModule> logger,
+        ILogger<PlayGameServiceModule> logger,
         IConfiguration configuration,
         IList<RankConfig> registeredRanks
         ) : base(client, logger)

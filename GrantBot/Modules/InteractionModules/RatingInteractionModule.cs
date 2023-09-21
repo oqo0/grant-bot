@@ -13,13 +13,13 @@ namespace GrantBot.Modules.InteractionModules;
 
 [RequireContext(ContextType.Guild)]
 [EnabledInDm(false)]
-public class TopModule : InteractionModuleBase<SocketInteractionContext>
+public class RatingInteractionModule : InteractionModuleBase<SocketInteractionContext>
 {
     private readonly IUserRepository _userRepository;
     private readonly DiscordSocketClient _discordSocketClient;
     private readonly IConfiguration _configuration;
     
-    public TopModule(
+    public RatingInteractionModule(
         IUserRepository userRepository,
         DiscordSocketClient discordSocketClient,
         IConfiguration configuration)

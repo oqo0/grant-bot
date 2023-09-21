@@ -14,15 +14,15 @@ namespace GrantBot.Modules.InteractionModules;
 [RequireUserPermission(GuildPermission.Administrator)]
 [RequireContext(ContextType.Guild)]
 [EnabledInDm(false)]
-public class SeasonModule : InteractionModuleBase<SocketInteractionContext>
+public class SeasonInteractionModule : InteractionModuleBase<SocketInteractionContext>
 {
     private readonly ISeasonRepository _seasonRepository;
-    private readonly ILogger<SeasonModule> _logger;
+    private readonly ILogger<SeasonInteractionModule> _logger;
     private readonly IConfiguration _configuration;
 
-    public SeasonModule(
+    public SeasonInteractionModule(
         ISeasonRepository seasonRepository,
-        ILogger<SeasonModule> logger,
+        ILogger<SeasonInteractionModule> logger,
         IConfiguration configuration)
     {
         _seasonRepository = seasonRepository;

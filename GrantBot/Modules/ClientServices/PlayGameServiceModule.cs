@@ -6,13 +6,13 @@ using Microsoft.Extensions.Logging;
 
 namespace GrantBot.Modules.ClientServices;
 
-public class PlayingGameModule : DiscordClientService
+public class PlayGameServiceModule : DiscordClientService
 {
     private readonly IConfiguration _configuration;
     
-    public PlayingGameModule(
+    public PlayGameServiceModule(
         DiscordSocketClient client,
-        ILogger<PlayingGameModule> logger,
+        ILogger<PlayGameServiceModule> logger,
         IConfiguration configuration
     ) : base(client, logger)
     {

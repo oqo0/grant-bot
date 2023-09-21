@@ -17,20 +17,20 @@ namespace GrantBot.Modules.InteractionModules;
 
 [RequireContext(ContextType.Guild)]
 [EnabledInDm(false)]
-public class AwardModule : InteractionModuleBase<SocketInteractionContext>
+public class AwardInteractionModule : InteractionModuleBase<SocketInteractionContext>
 {
     private readonly IUserRepository _userRepository;
     private readonly ISeasonRepository _seasonRepository;
     private readonly IAwardRepository _awardRepository;
-    private readonly ILogger<SeasonModule> _logger;
+    private readonly ILogger<SeasonInteractionModule> _logger;
     private readonly IConfiguration _configuration;
     private readonly IAwardReceivedPainter _awardReceivedPainter;
 
-    public AwardModule(
+    public AwardInteractionModule(
         IUserRepository userRepository,
         ISeasonRepository seasonRepository,
         IAwardRepository awardRepository,
-        ILogger<SeasonModule> logger,
+        ILogger<SeasonInteractionModule> logger,
         IConfiguration configuration,
         IAwardReceivedPainter awardReceivedPainter)
     {

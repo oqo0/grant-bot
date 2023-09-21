@@ -86,9 +86,9 @@ try
         });
         
         services.AddHostedService<InteractionHandler>();
-        services.AddHostedService<PlayingGameModule>();
-        services.AddHostedService<ReactionRoleModule>();
-        services.AddHostedService<UserModule>();
+        services.AddHostedService<PlayGameServiceModule>();
+        services.AddHostedService<RoleOnReactionServiceModule>();
+        services.AddHostedService<UserRankServiceModule>();
         
         services.AddSingleton<IAwardReceivedPainter, AwardReceivedPainter>();
         services.AddSingleton<IProfileInfoPainter, ProfileInfoPainter>();
