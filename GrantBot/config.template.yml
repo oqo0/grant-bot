@@ -71,13 +71,27 @@ image-gen:
       primary: "#FFFF00"
       secondary: "#FFFFFF"
   # All objects should be placed within the picture
-  profile:
-    award-name-cords:
+  new-award:
+    name:
       x: 120
       y: 32
-    description-cords:
+    description:
       x: 120
       y: 64
-    award-badge-cords:
+    badge:
       x: 40
       y: 44
+  profile:
+    avatar:
+      x: 30
+      y: 33
+    username:
+      x: 80
+      y: 44
+    rank:
+      x: 310
+      y: 34
+    awards:
+      x: 30
+      y: 106
+      max-x: 386
