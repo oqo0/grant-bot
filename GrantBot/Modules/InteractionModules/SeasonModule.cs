@@ -1,7 +1,5 @@
 using Discord;
-using Discord.Commands;
 using Discord.Interactions;
-using Discord.WebSocket;
 using GrantBot.Data.Models;
 using GrantBot.Data.Repositories;
 using GrantBot.Extensions;
@@ -11,10 +9,10 @@ using Microsoft.Extensions.Logging;
 using SmartFormat;
 using ContextType = Discord.Interactions.ContextType;
 
-namespace GrantBot.Modules;
+namespace GrantBot.Modules.InteractionModules;
 
-[Discord.Interactions.RequireUserPermission(GuildPermission.Administrator)]
-[Discord.Interactions.RequireContext(ContextType.Guild)]
+[RequireUserPermission(GuildPermission.Administrator)]
+[RequireContext(ContextType.Guild)]
 [EnabledInDm(false)]
 public class SeasonModule : InteractionModuleBase<SocketInteractionContext>
 {

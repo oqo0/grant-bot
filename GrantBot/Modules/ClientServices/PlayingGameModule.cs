@@ -4,7 +4,7 @@ using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace GrantBot.Modules;
+namespace GrantBot.Modules.ClientServices;
 
 public class PlayingGameModule : DiscordClientService
 {

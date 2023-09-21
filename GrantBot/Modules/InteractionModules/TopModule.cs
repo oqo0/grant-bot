@@ -9,7 +9,7 @@ using GrantBot.Utils.TypeConverters;
 using Microsoft.Extensions.Configuration;
 using SmartFormat;
 
-namespace GrantBot.Modules;
+namespace GrantBot.Modules.InteractionModules;
 
 [RequireContext(ContextType.Guild)]
 [EnabledInDm(false)]

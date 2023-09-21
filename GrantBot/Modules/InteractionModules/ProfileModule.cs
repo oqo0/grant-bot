@@ -8,9 +8,8 @@ using GrantBot.Data.Repositories;
 using GrantBot.Services.Painters;
 using GrantBot.Utils.TypeConverters;
 using SixLabors.ImageSharp.Formats.Png;
-using SmartFormat;
 
-namespace GrantBot.Modules;
+namespace GrantBot.Modules.InteractionModules;
 
 [RequireContext(ContextType.Guild)]
 [EnabledInDm(false)]

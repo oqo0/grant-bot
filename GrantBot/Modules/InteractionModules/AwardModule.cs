@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp.Formats.Png;
 using SmartFormat;
 
-namespace GrantBot.Modules;
+namespace GrantBot.Modules.InteractionModules;
 
 [RequireContext(ContextType.Guild)]
 [EnabledInDm(false)]

@@ -8,7 +8,7 @@ using GrantBot.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace GrantBot.Modules;
+namespace GrantBot.Modules.ClientServices;
 
 public class UserModule : DiscordClientService
 {

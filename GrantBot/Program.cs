@@ -8,6 +8,7 @@ using GrantBot.Data.Repositories;
 using GrantBot.Data.Repositories.Impl;
 using GrantBot.Models;
 using GrantBot.Modules;
+using GrantBot.Modules.ClientServices;
 using GrantBot.Services.Painters;
 using GrantBot.Services.Painters.Impl;
 using Microsoft.EntityFrameworkCore;
