@@ -13,6 +13,6 @@ public class RankConfig
     [YamlMember(Alias = "priority")]
     public uint Priority { get; set; }
     
-    [YamlMember(Alias = "image-path")]
+    [YamlMember(Alias = "image")]
     public string? Image { get; set; }
 }
