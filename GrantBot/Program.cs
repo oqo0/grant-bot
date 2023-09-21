@@ -91,6 +91,7 @@ try
         
         services.AddSingleton<IAwardReceivedPainter, AwardReceivedPainter>();
         services.AddSingleton<IProfileInfoPainter, ProfileInfoPainter>();
+        services.AddHttpClient();
         
         services.AddScoped<IAwardRepository, AwardRepository>();
         services.AddScoped<ISeasonRepository, SeasonRepository>();
