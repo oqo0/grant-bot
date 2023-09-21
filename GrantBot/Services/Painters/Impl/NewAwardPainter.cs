@@ -15,7 +15,7 @@ public class AwardReceivedPainter : IAwardReceivedPainter
     #endregion
     
     private readonly Image<Rgba32> _backgroundImage;
-    private readonly IDictionary<string, Image<Rgba32>> _awardsBadges = new Dictionary<string, Image<Rgba32>>();
+    private readonly IDictionary<string, Image<Rgba32>> _awardsBadges;
     private readonly Font _font;
     private readonly Point _awardNamePoint;
     private readonly Point _descriptionPoint;
@@ -31,14 +31,14 @@ public class AwardReceivedPainter : IAwardReceivedPainter
         _awardsBadges = GetAwardBadges(registeredAwards);
 
         _awardNamePoint = new Point(
-            imageGenConfig.GetValue<int>("profile:award-name-cords:x"),
-            imageGenConfig.GetValue<int>("profile:award-name-cords:y"));
+            imageGenConfig.GetValue<int>("new-award:name:x"),
+            imageGenConfig.GetValue<int>("new-award:name:y"));
         _descriptionPoint = new Point(
-            imageGenConfig.GetValue<int>("profile:description-cords:x"),
-            imageGenConfig.GetValue<int>("profile:description-cords:y"));
+            imageGenConfig.GetValue<int>("new-award:description:x"),
+            imageGenConfig.GetValue<int>("new-award:description:y"));
         _awardBadgePoint = new Point(
-            imageGenConfig.GetValue<int>("profile:award-badge-cords:x"),
-            imageGenConfig.GetValue<int>("profile:award-badge-cords:y"));
+            imageGenConfig.GetValue<int>("new-award:badge:x"),
+            imageGenConfig.GetValue<int>("new-award:badge:y"));
         
         var fontSize = imageGenConfig.GetValue<int>("font:size");
         var fontStyle = imageGenConfig.GetValue<FontStyle>("font:style");
