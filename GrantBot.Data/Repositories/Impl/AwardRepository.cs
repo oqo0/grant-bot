@@ -29,6 +29,13 @@ public class AwardRepository : IAwardRepository
         return _context.Awards.ToList();
     }
 
+    public IList<Award> GetFromUserBySeason(long userId, long seasonId)
+    {
+        return _context.Awards
+            .Where(a => a.Season.Id == seasonId && a.OwnerId == userId)
+            .ToList();
+    }
+    
     public bool Update(Award data)
     {
         var award = GetById(data.Id);
