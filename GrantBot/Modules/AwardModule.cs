@@ -98,19 +98,4 @@ public class AwardModule : InteractionModuleBase<SocketInteractionContext>
             Smart.Format(_configuration["lang:award:received"],
                 new { UserPing = awardReceiver.Mention, MedalName = newAward.Medal }));
     }
-    
-    [SlashCommand("season-awards", "Show awards of a user from a season.")]
-    public async Task SeasonAwards(
-        SocketGuildUser guildUser,
-        [Autocomplete(typeof(SeasonAutocompleteHandler)),
-         TypeConverter(typeof(SeasonTypeConverter))] Season season)
-    {
-        throw new NotImplementedException();
-    }
-
-    [SlashCommand("all-awards", "Show all awards of a user.")]
-    public async Task AllAwards(SocketGuildUser guildUser)
-    {
-        throw new NotImplementedException();
-    }
 }
